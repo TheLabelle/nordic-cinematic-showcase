@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BOOKING_URL, featuredProjects, filterProjects, projects } from '@/data/site';
+import { BOOKING_URL, findProject, featuredProjects, filterProjects, projects } from '@/data/site';
 describe('Nordik project and booking configuration', () => {
   it('keeps the booking destination as the requested single placeholder', () => { expect(BOOKING_URL).toBe('BOOKING_URL'); });
   it('provides exactly twelve editable placeholder projects', () => { expect(projects).toHaveLength(12); });
@@ -14,5 +14,6 @@ describe('Nordik project and booking configuration', () => {
   });
   it('filters real estate without showing events', () => { expect(filterProjects('real-estate').map(p => p.id)).toEqual([1,3,4,6,7,9,10,12]); });
   it('filters events without showing real estate', () => { expect(filterProjects('events').map(p => p.id)).toEqual([2,5,8,11]); });
+  it('gives every project a unique detail page address', () => { expect(new Set(projects.map(p => p.slug)).size).toBe(12); expect(findProject('une-autre-perspective')?.id).toBe(1); });
   it('shows all twelve projects for all', () => { expect(filterProjects('all')).toHaveLength(12); });
 });
