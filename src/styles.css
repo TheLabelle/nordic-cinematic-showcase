@@ -96,7 +96,7 @@
   .hero-content { padding: 205px 7% 130px; } .hero h1 { font-size: 60px; margin-top: 25px; margin-bottom: 24px; } .hero .eyebrow { font-size: 7px; gap: 9px; } .hero-content>p { font-size: 12px; max-width: 285px; line-height: 1.9; } .hero-booking { margin-top: 29px; height: 48px; } .hero-discover { bottom: 35px; left: 7%; font-size: 9px; } .hero-side-note { display: none; }
   .section-wrap { padding-left: 7%; padding-right: 7%; } .projects-section { padding-top: 56px; padding-bottom: 58px; } .section-heading { margin-bottom: 27px; } .section-heading h2 { font-size: 34px; max-width: 285px; } .section-eyebrow { font-size: 8px; margin-bottom: 12px; } .section-number { font-size: 9px; }
   .filters { gap: 5px; margin-bottom: 25px; } .filter { font-size: 10px; padding-left: 14px; padding-right: 14px; }
-  .project-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 27px 16px; } .project-image-button { aspect-ratio: 1.2; } .project-caption { margin-top: 12px; align-items: flex-start; } .project-caption h3 { font-size: 22px; line-height: 1.1; } .project-caption svg { width: 14px; } .project>p { font-size: 9px; } .location-tag { left: 7px; top: 7px; padding: 4px; font-size: 6px; } .play-icon { width: 34px; height: 34px; } .play-icon svg { width: 14px; }
+  .project-grid { grid-template-columns: 1fr; gap: 27px 16px; } .project-image-button { aspect-ratio: 1.2; } .project-caption { margin-top: 12px; align-items: flex-start; } .project-caption h3 { font-size: 22px; line-height: 1.1; } .project-caption svg { width: 14px; } .project>p { font-size: 9px; } .location-tag { left: 7px; top: 7px; padding: 4px; font-size: 6px; } .play-icon { width: 34px; height: 34px; } .play-icon svg { width: 14px; }
   .services-section { padding: 56px 0; } .services-grid { grid-template-columns: 1fr; gap: 32px; } .service { gap: 20px; padding-top: 23px; } .service h3 { font-size: 28px; } .service p { font-size: 11px; } .service .service-star { top: 25px; }
   .testimonials-section { padding-top: 56px; padding-bottom: 50px; } .testimonials-grid { grid-template-columns: 1fr; gap: 14px; } .testimonial { padding: 24px; } .testimonial>p { margin: 12px 0 24px; }
   .logistics { margin: 0 7%; padding: 24px 0; gap: 16px; } .logistics div>p:last-child { font-size: 11px; line-height: 1.8; max-width: 245px; } .logistics>svg:first-child { flex-shrink: 0; } .logistics-star { width: 22px; }
@@ -106,3 +106,9 @@
 }
 @media (max-width: 370px) { .brand { width: 140px; font-size: 19px; } .header-actions { gap: 3px; } .hero h1 { font-size: 52px; } .project-grid { grid-template-columns: 1fr; } .project-image-button { aspect-ratio: 1.5; } .final-booking h2 { font-size: 39px; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
+
+.portfolio-section { padding-top: 160px; }
+.portfolio-section .section-heading h1 { font-size: 43px; line-height: 1.15; }
+.all-projects { display: flex; justify-content: center; margin-top: 42px; }
+.all-projects-button { height: 56px; min-width: 260px; font-size: 14px; }
+@media (max-width: 767px) { .portfolio-section { padding-top: 125px; } .portfolio-section .section-heading h1 { font-size: 34px; max-width: 285px; } }
