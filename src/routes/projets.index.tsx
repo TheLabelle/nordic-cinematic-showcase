@@ -5,7 +5,7 @@ import { NordicStar } from '@/components/nordik/brand';
 import { SiteHeader, SiteFooter, FinalBooking, MobileBooking, ProjectGallery } from '@/components/nordik/site-ui';
 import { copy, filterProjects, type Language, type Category } from '@/data/site';
 
-export const Route = createFileRoute('/projets')({
+export const Route = createFileRoute('/projets/')({
   validateSearch: (search: Record<string, unknown>): { lang: Language } => ({ lang: search['lang'] === 'en' ? 'en' : 'fr' }),
   loaderDeps: ({ search }) => ({ lang: search.lang }),
   loader: ({ deps }) => ({ lang: deps.lang }),
