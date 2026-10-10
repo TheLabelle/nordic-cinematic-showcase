@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BOOKING_URL, findProject, featuredProjects, filterProjects, projects } from '@/data/site';
+import { BOOKING_URL, copy, findProject, featuredProjects, filterProjects, projects } from '@/data/site';
 describe('Nordik project and booking configuration', () => {
   it('keeps the booking destination as the requested single placeholder', () => { expect(BOOKING_URL).toBe('BOOKING_URL'); });
   it('provides exactly twelve editable placeholder projects', () => { expect(projects).toHaveLength(12); });
@@ -16,4 +16,12 @@ describe('Nordik project and booking configuration', () => {
   it('filters events without showing real estate', () => { expect(filterProjects('events').map(p => p.id)).toEqual([2,5,8,11]); });
   it('gives every project a unique detail page address', () => { expect(new Set(projects.map(p => p.slug)).size).toBe(12); expect(findProject('une-autre-perspective')?.id).toBe(1); });
   it('shows all twelve projects for all', () => { expect(filterProjects('all')).toHaveLength(12); });
+  it('keeps the home intro block bilingual with the approved wording', () => {
+    expect(copy.fr.introTitle).toBe('Pourquoi une vidéo promotionnelle?');
+    expect(copy.en.introTitle).toBe('Why a promotional video?');
+    expect(copy.fr.introP1).toContain('l’espace, l’ambiance et le professionnalisme de votre entreprise');
+    expect(copy.en.introP1).toContain('the space, the atmosphere and the professionalism of your business');
+    expect(copy.fr.introP2).toContain('met en valeur vos propriétés et vos événements');
+    expect(copy.en.introP2).toContain('showcases your properties and events');
+  });
 });
