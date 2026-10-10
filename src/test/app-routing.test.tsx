@@ -9,7 +9,7 @@ import { routeTree } from "@/routeTree.gen";
 describe("App routing", () => {
   it("matches the dedicated portfolio at /projets", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
-    expect(router.matchRoutes("/projets").at(-1)?.routeId).toBe("/projets");
+    expect(router.matchRoutes("/projets").at(-1)?.routeId).toBe("/projets/");
   });
   it("matches a page for / instead of falling back to not found", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
