@@ -24,4 +24,8 @@ describe('Nordik project and booking configuration', () => {
     expect(copy.fr.introP2).toContain('met en valeur vos propriétés et vos événements');
     expect(copy.en.introP2).toContain('showcases your properties and events');
   });
+  it('gives the two project links different labels in both languages', () => {
+    expect(copy.fr.projects).not.toBe(copy.fr.portfolio);
+    expect(copy.en.projects).not.toBe(copy.en.portfolio);
+  });
 });
