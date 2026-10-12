@@ -9,7 +9,7 @@ export function LanguageToggle({ lang }: { lang: Language }) {
   return <div className="language-toggle" aria-label={lang === 'fr' ? 'Langue' : 'Language'}>{(['fr', 'en'] as const).map((l, i) => <span key={l}>{i > 0 && <span className="language-divider">|</span>}<Button asChild variant="ghost" className={lang === l ? 'language active' : 'language'}><Link to="." search={prev => ({ ...prev, lang: l })} resetScroll={false} aria-current={lang === l ? 'true' : undefined}>{l.toUpperCase()}</Link></Button></span>)}</div>;
 }
 export function BookingButton({ lang, className = '' }: { lang: Language; className?: string }) {
- return <Button asChild className={`booking-button ${className}`}><a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">{copy[lang].quote}<ArrowUpRight /></a></Button>;
+ return <Button asChild className={`booking-button ${className}`}><Link to="/soumission" search={{ lang }}>{copy[lang].quote}<ArrowUpRight /></Link></Button>;
 }
 export function SiteHeader({ lang }: { lang: Language }) {
  const t = copy[lang];
