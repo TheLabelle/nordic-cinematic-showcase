@@ -1,4 +1,5 @@
 import { createServerFn } from '@tanstack/react-start';
+import { copy, QUOTE_BUDGETS, QUOTE_PROJECT_TYPES, type QuoteBudget, type QuoteProjectType } from '@/data/site';
 
 // Single constant for recipient email address.
 // Stored here on the server and never exposed to the client.
@@ -8,7 +9,9 @@ export interface QuoteSubmissionPayload {
   name: string;
   phone?: string | undefined;
   email?: string | undefined;
-  projectTypes: ('real-estate' | 'events')[];
+  projectTypes: QuoteProjectType[];
+  preferredDate?: string | undefined;
+  budget?: QuoteBudget | undefined;
   message?: string | undefined;
   hp_website?: string | undefined;
 }
@@ -65,9 +68,22 @@ export async function processQuoteSubmission(
     return { success: false, error: 'At least one project type is required' };
   }
 
-  const projectLabels = data.projectTypes
-    .map(t => (t === 'real-estate' ? 'Immobilier / Real estate' : 'Événement / Event'))
-    .join(', ');
+  if (data.projectTypes.some(t => !QUOTE_PROJECT_TYPES.includes(t))) {
+    return { success: false, error: 'Invalid project type' };
+  }
+
+  // 5. Optional fields: only accept known values
+  if (data.budget && !QUOTE_BUDGETS.includes(data.budget)) {
+    return { success: false, error: 'Invalid budget' };
+  }
+  if (data.preferredDate && !/^\d{4}-\d{2}-\d{2}$/.test(data.preferredDate)) {
+    return { success: false, error: 'Invalid date' };
+  }
+
+  const fr = copy.fr.quotePage;
+  const projectLabels = data.projectTypes.map(t => fr.projectTypes[t]).join(', ');
+  const dateLabel = data.preferredDate || 'Non spécifiée';
+  const budgetLabel = data.budget ? fr.budgets[data.budget] : 'Non spécifié';
 
   const plainText = `
 Nouvelle demande de soumission — NORDIK MÉDIA
@@ -77,6 +93,8 @@ Nom: ${data.name.trim()}
 Téléphone: ${data.phone?.trim() || 'Non spécifié'}
 Courriel: ${data.email?.trim() || 'Non spécifié'}
 Type(s) de projet: ${projectLabels}
+Date souhaitée: ${dateLabel}
+Budget approximatif: ${budgetLabel}
 
 Message:
 ${data.message?.trim() || '(Aucun message)'}
@@ -97,6 +115,8 @@ Date: ${new Date().toLocaleString('fr-CA', { timeZone: 'America/Toronto' })}
     <p style="margin: 12px 0;"><strong>Téléphone :</strong> ${escapeHtml(data.phone?.trim() || 'Non spécifié')}</p>
     <p style="margin: 12px 0;"><strong>Courriel :</strong> ${escapeHtml(data.email?.trim() || 'Non spécifié')}</p>
     <p style="margin: 12px 0;"><strong>Type(s) de projet :</strong> ${escapeHtml(projectLabels)}</p>
+    <p style="margin: 12px 0;"><strong>Date souhaitée :</strong> ${escapeHtml(dateLabel)}</p>
+    <p style="margin: 12px 0;"><strong>Budget approximatif :</strong> ${escapeHtml(budgetLabel)}</p>
     <div style="margin: 20px 0; padding: 16px; background-color: rgba(255,255,255,0.05); border-radius: 4px;">
       <strong>Message :</strong>
       <p style="margin: 8px 0 0; white-space: pre-wrap;">${escapeHtml(data.message?.trim() || 'Aucun message')}</p>

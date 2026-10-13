@@ -89,4 +89,34 @@ describe('Quote request configuration and backend handler', () => {
     });
     expect(res.success).toBe(true);
   });
+
+  it('accepts the new project types with an optional date and budget', async () => {
+    const res = await processQuoteSubmission({
+      name: 'Jean Tremblay',
+      phone: '450-555-1234',
+      projectTypes: ['business', 'construction', 'vlog', 'other'],
+      preferredDate: '2026-11-20',
+      budget: '1000-2500',
+    });
+    expect(res.success).toBe(true);
+  });
+
+  it('rejects unknown project types, budgets and malformed dates', async () => {
+    const base = { name: 'Jean Tremblay', phone: '450-555-1234' };
+    const badType = await processQuoteSubmission({ ...base, projectTypes: ['wedding' as never] });
+    expect(badType.error).toBe('Invalid project type');
+    const badBudget = await processQuoteSubmission({ ...base, projectTypes: ['events'], budget: 'free' as never });
+    expect(badBudget.error).toBe('Invalid budget');
+    const badDate = await processQuoteSubmission({ ...base, projectTypes: ['events'], preferredDate: 'demain' });
+    expect(badDate.error).toBe('Invalid date');
+  });
+
+  it('offers six project types, four budgets and a 450 example number in both languages', () => {
+    expect(copy.fr.quotePage.projectTypes).toEqual({ 'real-estate': 'Immobilier', events: 'Événement', business: 'Commerce/PME', construction: 'Construction', vlog: 'Vlog/réseaux sociaux', other: 'Autre' });
+    expect(Object.keys(copy.en.quotePage.projectTypes)).toHaveLength(6);
+    expect(Object.values(copy.fr.quotePage.budgets)).toEqual(['Moins de 1 000 $', '1 000 à 2 500 $', '2 500 à 5 000 $', 'Plus de 5 000 $']);
+    expect(Object.keys(copy.en.quotePage.budgets)).toHaveLength(4);
+    expect(copy.fr.quotePage.phonePlaceholder).toBe('(450) 000-0000');
+    expect(copy.en.quotePage.phonePlaceholder).toBe('(450) 000-0000');
+  });
 });

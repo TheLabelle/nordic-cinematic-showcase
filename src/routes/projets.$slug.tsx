@@ -5,7 +5,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '@/components/ui/button';
 import { NordicStar } from '@/components/nordik/brand';
 import { SiteHeader, SiteFooter, FinalBooking, MobileBooking } from '@/components/nordik/site-ui';
-import { copy, findProject, type Language } from '@/data/site';
+import { copy, findProject, imageAlt, type Language } from '@/data/site';
 
 export const Route = createFileRoute('/projets/$slug')({
   validateSearch: (search: Record<string, unknown>): { lang: Language } => ({ lang: search['lang'] === 'en' ? 'en' : 'fr' }),
@@ -55,13 +55,13 @@ function ProjectDetail() {
             {project.body[lang].map((para, i) => <p key={i}>{para}</p>)}
             {work.length > 0 && <><h3>{t.workTitle}</h3><ul>{work.map(item => <li key={item}><NordicStar className="size-3" />{item}</li>)}</ul></>}
           </aside>
-          {project.photos.length > 0 && <div className="detail-photos">{project.photos.map((src, i) => <button type="button" key={i} className="detail-photo" onClick={() => setPhoto(src)} aria-label={`${t.photo} ${i + 1} — ${title}`}><img src={src} width="1280" height="832" loading="lazy" alt={`${title} — ${t.photo} ${i + 1}`} /></button>)}</div>}
+          {project.photos.length > 0 && <div className="detail-photos">{project.photos.map((src, i) => <button type="button" key={i} className="detail-photo" onClick={() => setPhoto(src)} aria-label={`${t.photo} ${i + 1} — ${title}`}><img src={src} width="1280" height="832" loading="lazy" alt={imageAlt(src, lang, `${title} — ${t.photo} ${i + 1}`)} /></button>)}</div>}
         </div>
       </section>
       <FinalBooking lang={lang} />
     </main>
     <SiteFooter lang={lang} />
     <MobileBooking lang={lang} />
-    <Dialog.Root open={photo !== null} onOpenChange={open => { if (!open) setPhoto(null); }}><Dialog.Portal><Dialog.Overlay className="lightbox-overlay" /><Dialog.Content className="lightbox photo-lightbox"><div className="lightbox-heading"><Dialog.Title>{title}</Dialog.Title><Dialog.Description className="sr-only">{t.photo}</Dialog.Description><Dialog.Close asChild><Button variant="ghost" size="icon" aria-label={t.close}><X /></Button></Dialog.Close></div>{photo && <img src={photo} alt={title} />}</Dialog.Content></Dialog.Portal></Dialog.Root>
+    <Dialog.Root open={photo !== null} onOpenChange={open => { if (!open) setPhoto(null); }}><Dialog.Portal><Dialog.Overlay className="lightbox-overlay" /><Dialog.Content className="lightbox photo-lightbox"><div className="lightbox-heading"><Dialog.Title>{title}</Dialog.Title><Dialog.Description className="sr-only">{t.photo}</Dialog.Description><Dialog.Close asChild><Button variant="ghost" size="icon" aria-label={t.close}><X /></Button></Dialog.Close></div>{photo && <img src={photo} alt={imageAlt(photo, lang, title)} />}</Dialog.Content></Dialog.Portal></Dialog.Root>
   </div>;
 }

@@ -10,6 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AProposRouteImport } from './routes/a-propos'
+import { Route as ForfaitsRouteImport } from './routes/forfaits'
+import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SoumissionRouteImport } from './routes/soumission'
 import { Route as ProjetsIndexRouteImport } from './routes/projets.index'
 import { Route as ProjetsSlugRouteImport } from './routes/projets.$slug'
@@ -17,6 +20,21 @@ import { Route as ProjetsSlugRouteImport } from './routes/projets.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AProposRoute = AProposRouteImport.update({
+  id: '/a-propos',
+  path: '/a-propos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForfaitsRoute = ForfaitsRouteImport.update({
+  id: '/forfaits',
+  path: '/forfaits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SoumissionRoute = SoumissionRouteImport.update({
@@ -37,12 +55,18 @@ const ProjetsSlugRoute = ProjetsSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/a-propos': typeof AProposRoute
+  '/forfaits': typeof ForfaitsRoute
+  '/services': typeof ServicesRoute
   '/soumission': typeof SoumissionRoute
   '/projets/$slug': typeof ProjetsSlugRoute
   '/projets/': typeof ProjetsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/a-propos': typeof AProposRoute
+  '/forfaits': typeof ForfaitsRoute
+  '/services': typeof ServicesRoute
   '/soumission': typeof SoumissionRoute
   '/projets/$slug': typeof ProjetsSlugRoute
   '/projets': typeof ProjetsIndexRoute
@@ -50,20 +74,48 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/a-propos': typeof AProposRoute
+  '/forfaits': typeof ForfaitsRoute
+  '/services': typeof ServicesRoute
   '/soumission': typeof SoumissionRoute
   '/projets/$slug': typeof ProjetsSlugRoute
   '/projets/': typeof ProjetsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/soumission' | '/projets/$slug' | '/projets/'
+  fullPaths:
+    | '/'
+    | '/a-propos'
+    | '/forfaits'
+    | '/services'
+    | '/soumission'
+    | '/projets/$slug'
+    | '/projets/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/soumission' | '/projets/$slug' | '/projets'
-  id: '__root__' | '/' | '/soumission' | '/projets/$slug' | '/projets/'
+  to:
+    | '/'
+    | '/a-propos'
+    | '/forfaits'
+    | '/services'
+    | '/soumission'
+    | '/projets/$slug'
+    | '/projets'
+  id:
+    | '__root__'
+    | '/'
+    | '/a-propos'
+    | '/forfaits'
+    | '/services'
+    | '/soumission'
+    | '/projets/$slug'
+    | '/projets/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AProposRoute: typeof AProposRoute
+  ForfaitsRoute: typeof ForfaitsRoute
+  ServicesRoute: typeof ServicesRoute
   SoumissionRoute: typeof SoumissionRoute
   ProjetsSlugRoute: typeof ProjetsSlugRoute
   ProjetsIndexRoute: typeof ProjetsIndexRoute
@@ -76,6 +128,27 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/a-propos': {
+      id: '/a-propos'
+      path: '/a-propos'
+      fullPath: '/a-propos'
+      preLoaderRoute: typeof AProposRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forfaits': {
+      id: '/forfaits'
+      path: '/forfaits'
+      fullPath: '/forfaits'
+      preLoaderRoute: typeof ForfaitsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/soumission': {
@@ -104,6 +177,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AProposRoute: AProposRoute,
+  ForfaitsRoute: ForfaitsRoute,
+  ServicesRoute: ServicesRoute,
   SoumissionRoute: SoumissionRoute,
   ProjetsSlugRoute: ProjetsSlugRoute,
   ProjetsIndexRoute: ProjetsIndexRoute,

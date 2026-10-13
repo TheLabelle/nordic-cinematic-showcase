@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { BOOKING_URL, copy, findProject, featuredProjects, filterProjects, projects, testimonials } from '@/data/site';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { BOOKING_URL, CATEGORY_ORDER, OWNER_PHOTOS, PACKAGE_PRICES, SERVICE_CITIES, SERVICE_MEDIA, copy, findProject, featuredProjects, filterProjects, projects, testimonials } from '@/data/site';
 describe('Nordik project and booking configuration', () => {
   it('keeps the booking destination as the requested single placeholder', () => { expect(BOOKING_URL).toBe('BOOKING_URL'); });
   it('provides exactly twelve editable placeholder projects', () => { expect(projects).toHaveLength(12); });
@@ -24,9 +26,52 @@ describe('Nordik project and booking configuration', () => {
     expect(copy.fr.introP2).toContain('met en valeur vos propriétés et vos événements');
     expect(copy.en.introP2).toContain('showcases your properties and events');
   });
-  it('gives the two project links different labels in both languages', () => {
-    expect(copy.fr.projects).not.toBe(copy.fr.portfolio);
-    expect(copy.en.projects).not.toBe(copy.en.portfolio);
+  it('labels the menu Services · Réalisations · Forfaits · À propos · Soumission', () => {
+    expect([copy.fr.services, copy.fr.projects, copy.fr.packagesNav, copy.fr.aboutNav, copy.fr.quoteNav]).toEqual(['Services', 'Réalisations', 'Forfaits', 'À propos', 'Soumission']);
+    expect([copy.en.services, copy.en.projects, copy.en.packagesNav, copy.en.aboutNav, copy.en.quoteNav]).toEqual(['Services', 'Our work', 'Packages', 'About', 'Quote']);
+  });
+  it('keeps every package price as a [PRIX] placeholder and mentions Interac', () => {
+    expect(Object.values(PACKAGE_PRICES)).toEqual(Array(6).fill('[PRIX]'));
+    expect(copy.fr.packagesPage.packages.map(p => p.id)).toEqual(['real-estate', 'business', 'construction', 'events', 'vlog']);
+    expect(copy.en.packagesPage.packages).toHaveLength(5);
+    for (const lang of ['fr', 'en'] as const) for (const p of copy[lang].packagesPage.packages) expect(p.items.length).toBeGreaterThanOrEqual(3);
+    expect(copy.fr.packagesPage.payment).toBe('Paiement par virement Interac.');
+  });
+  it('has two co-owner blocks on the about page in both languages', () => {
+    expect(copy.fr.aboutPage.owners).toHaveLength(2);
+    expect(copy.en.aboutPage.owners).toHaveLength(2);
+    expect(OWNER_PHOTOS).toHaveLength(2);
+  });
+  it('never sets text smaller than 12px in the stylesheet', () => {
+    const css = readFileSync(resolve(__dirname, '../styles.css'), 'utf8');
+    const sizes = [...css.matchAll(/font(?:-size)?:\s*(\d+(?:\.\d+)?)px/g)].map(m => Number(m[1]));
+    expect(sizes.length).toBeGreaterThan(0);
+    expect(sizes.filter(n => n < 12)).toEqual([]);
+  });
+  it('targets Montreal’s North Shore and lists the five served cities', () => {
+    expect(copy.fr.region).toBe('Rive-Nord de Montréal');
+    expect(copy.en.region).toBe('Montreal’s North Shore');
+    expect(SERVICE_CITIES).toEqual(['Laval', 'Terrebonne', 'Blainville', 'Mirabel', 'Saint-Jérôme']);
+    for (const lang of ['fr', 'en'] as const) expect(JSON.stringify(copy[lang])).not.toMatch(/Rive-Sud|Grand Montréal|South Shore|Greater Montreal/);
+  });
+  it('offers six portfolio filters with an empty state for categories without projects yet', () => {
+    expect(CATEGORY_ORDER).toEqual(['all', 'real-estate', 'events', 'business', 'construction', 'vlog']);
+    expect(copy.fr.filters).toEqual(['Tous', 'Immobilier', 'Événements', 'Commerces', 'Construction', 'Vlogs']);
+    expect(copy.en.filters).toHaveLength(6);
+    expect(filterProjects('construction')).toHaveLength(0);
+  });
+  it('lists the five services in the same order in both languages, each with a media slot', () => {
+    const ids = ['real-estate', 'business', 'construction', 'events', 'vlog'];
+    expect(copy.fr.servicesPage.services.map(x => x.id)).toEqual(ids);
+    expect(copy.en.servicesPage.services.map(x => x.id)).toEqual(ids);
+    expect(Object.keys(SERVICE_MEDIA).sort()).toEqual([...ids].sort());
+    expect(copy.fr.servicesPage.services[0]?.text).toBe('Faites ressortir chaque propriété, de l’intérieur jusqu’au quartier vu du ciel.');
+  });
+  it('adds the four “why choose us” points in both languages', () => {
+    expect(copy.fr.whyTitle).toBe('Pourquoi nous choisir');
+    expect(copy.fr.serviceTitle).toBe('Nos expertises');
+    expect(copy.fr.whyItems).toHaveLength(4);
+    expect(copy.en.whyItems).toHaveLength(4);
   });
   it('shows the Remorques Labelle testimonial first with the approved wording', () => {
     expect(testimonials[0]?.quote.fr).toBe('Vidéo de grande qualité, équipement professionnel et une équipe qui répond rapidement. On recommande sans hésiter.');

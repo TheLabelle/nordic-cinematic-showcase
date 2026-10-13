@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { NordicStar } from '@/components/nordik/brand';
 import { SiteHeader, SiteFooter } from '@/components/nordik/site-ui';
-import { copy, CONTACT_EMAIL, type Language } from '@/data/site';
+import { copy, CONTACT_EMAIL, QUOTE_BUDGETS, QUOTE_PROJECT_TYPES, type Language, type QuoteBudget, type QuoteProjectType } from '@/data/site';
 import { submitQuoteRequest } from '@/lib/quote';
 
 export const Route = createFileRoute('/soumission')({
@@ -16,10 +16,10 @@ export const Route = createFileRoute('/soumission')({
   loader: ({ deps }) => ({ lang: deps.lang }),
   head: ({ loaderData }) => {
     const en = loaderData?.lang === 'en';
-    const title = en ? 'Request a Quote — NORDIK MÉDIA' : 'Demande de soumission — NORDIK MÉDIA';
+    const title = en ? 'Free video quote on Montreal’s North Shore — NORDIK MÉDIA' : 'Soumission vidéo gratuite sur la Rive-Nord de Montréal — NORDIK MÉDIA';
     const description = en
-      ? 'Tell us about your real estate or corporate event video project and receive a fast quote.'
-      : 'Décrivez votre projet de vidéo immobilière ou événementielle et recevez une soumission rapide.';
+      ? 'Tell us about your real estate, business, construction, event or social media video project on Montreal’s North Shore and receive a fast, free quote.'
+      : 'Décrivez votre projet vidéo immobilier, d’entreprise, de construction, d’événement ou pour les réseaux sociaux sur la Rive-Nord de Montréal et recevez une soumission gratuite rapidement.';
     return {
       meta: [
         { title },
@@ -48,8 +48,9 @@ function QuotePage() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [realEstate, setRealEstate] = useState(false);
-  const [event, setEvent] = useState(false);
+  const [selectedTypes, setSelectedTypes] = useState<QuoteProjectType[]>([]);
+  const [preferredDate, setPreferredDate] = useState('');
+  const [budget, setBudget] = useState<QuoteBudget | ''>('');
   const [message, setMessage] = useState('');
   const [hpWebsite, setHpWebsite] = useState(''); // Honeypot field
 
@@ -105,9 +106,8 @@ function QuotePage() {
     }
 
     // 4. Validate project type
-    const projectTypes: ('real-estate' | 'events')[] = [];
-    if (realEstate) projectTypes.push('real-estate');
-    if (event) projectTypes.push('events');
+    // Keep the on-screen order regardless of click order
+    const projectTypes = QUOTE_PROJECT_TYPES.filter((type) => selectedTypes.includes(type));
 
     if (projectTypes.length === 0) {
       setProjectTypeError(qp.errorProjectType);
@@ -124,6 +124,8 @@ function QuotePage() {
           phone: trimmedPhone || undefined,
           email: trimmedEmail || undefined,
           projectTypes,
+          preferredDate: preferredDate || undefined,
+          budget: budget || undefined,
           message: message.trim() || undefined,
           hp_website: hpWebsite || undefined,
         },
@@ -196,8 +198,9 @@ function QuotePage() {
                       setName('');
                       setPhone('');
                       setEmail('');
-                      setRealEstate(false);
-                      setEvent(false);
+                      setSelectedTypes([]);
+                      setPreferredDate('');
+                      setBudget('');
                       setMessage('');
                     }}
                   >
@@ -286,31 +289,56 @@ function QuotePage() {
                       <span>{qp.projectType} *</span>
                     </label>
                     <div className="checkbox-group">
-                      <label className="checkbox-label" htmlFor="type-real-estate">
-                        <Checkbox
-                          id="type-real-estate"
-                          checked={realEstate}
-                          onCheckedChange={(checked) => {
-                            setRealEstate(Boolean(checked));
-                            if (projectTypeError) setProjectTypeError(null);
-                          }}
-                        />
-                        <span>{qp.realEstate}</span>
-                      </label>
-
-                      <label className="checkbox-label" htmlFor="type-events">
-                        <Checkbox
-                          id="type-events"
-                          checked={event}
-                          onCheckedChange={(checked) => {
-                            setEvent(Boolean(checked));
-                            if (projectTypeError) setProjectTypeError(null);
-                          }}
-                        />
-                        <span>{qp.event}</span>
-                      </label>
+                      {QUOTE_PROJECT_TYPES.map((type) => (
+                        <label key={type} className="checkbox-label" htmlFor={`type-${type}`}>
+                          <Checkbox
+                            id={`type-${type}`}
+                            checked={selectedTypes.includes(type)}
+                            onCheckedChange={(checked) => {
+                              setSelectedTypes((prev) =>
+                                checked ? [...prev, type] : prev.filter((t) => t !== type),
+                              );
+                              if (projectTypeError) setProjectTypeError(null);
+                            }}
+                          />
+                          <span>{qp.projectTypes[type]}</span>
+                        </label>
+                      ))}
                     </div>
                     {projectTypeError && <span className="field-error">{projectTypeError}</span>}
+                  </div>
+
+                  {/* Preferred date and budget (optional) */}
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="quote-date" className="form-label">
+                        <span>{qp.date} <span className="form-optional">({qp.optional})</span></span>
+                      </label>
+                      <input
+                        id="quote-date"
+                        type="date"
+                        className="form-input"
+                        min={new Date().toISOString().slice(0, 10)}
+                        value={preferredDate}
+                        onChange={(e) => setPreferredDate(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="quote-budget" className="form-label">
+                        <span>{qp.budget} <span className="form-optional">({qp.optional})</span></span>
+                      </label>
+                      <select
+                        id="quote-budget"
+                        className="form-input form-select"
+                        value={budget}
+                        onChange={(e) => setBudget(e.target.value as QuoteBudget | '')}
+                      >
+                        <option value="">{qp.budgetPlaceholder}</option>
+                        {QUOTE_BUDGETS.map((b) => (
+                          <option key={b} value={b}>{qp.budgets[b]}</option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
                   {/* Message (optional) */}
