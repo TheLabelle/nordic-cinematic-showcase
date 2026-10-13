@@ -6,3 +6,4 @@
 - [x] Add bilingual filtered /projets with shared cards, navigation and booking sections.
 - [x] Validate twelve placeholder records, featured selection and both page interactions.
 - [x] Add the bilingual intro block between the hero and the featured projects.
+- [x] Replace the first testimonial with the Remorques Labelle quote and align the cards.

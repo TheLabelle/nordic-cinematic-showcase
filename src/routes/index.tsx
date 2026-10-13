@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { ArrowDown, Drone, Clapperboard, MapPin, Quote, ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { NordicStar } from '@/components/nordik/brand';
-import { copy, featuredProjects, type Language } from '@/data/site';
+import { copy, featuredProjects, testimonials, type Language } from '@/data/site';
 import { BookingButton, SiteHeader, SiteFooter, FinalBooking, MobileBooking, ProjectGallery } from '@/components/nordik/site-ui';
 import hero from '@/assets/hero-house.jpg';
 
@@ -32,7 +32,7 @@ function Index() {
       <section id="intro" className="intro-section"><h2>{t.introTitle}</h2><p>{t.introP1}</p><p>{t.introP2}</p></section>
       <section id="projects" className="section-wrap projects-section"><div className="section-heading"><div><p className="eyebrow section-eyebrow"><NordicStar className="size-3" />{t.selected}</p><h2>{t.projectTitle}</h2></div><span className="section-number">01 /</span></div><ProjectGallery lang={lang} items={featuredProjects()} /><div className="all-projects"><Button asChild className="booking-button all-projects-button"><Link to="/projets" search={{ lang }}>{t.viewAll}<ArrowUpRight /></Link></Button></div></section>
       <section id="services" className="services-section"><div className="section-wrap"><div className="section-heading"><div><p className="eyebrow section-eyebrow"><NordicStar className="size-3" />{t.expertise}</p><h2>{t.serviceTitle}</h2></div><span className="section-number">02 /</span></div><div className="services-grid">{t.serviceItems.map((s, i) => <article className="service" key={s.title}>{i === 0 ? <Drone size={35} strokeWidth={1} /> : <Clapperboard size={35} strokeWidth={1} />}<div className="service-content"><h3>{s.title}</h3><ul className="service-bullets">{s.bullets.map((b, idx) => <li key={idx} className="service-bullet"><NordicStar className="service-bullet-star" /><span className="service-bullet-text">{b}</span></li>)}</ul></div><NordicStar className="service-star" /></article>)}</div></div></section>
-      <section className="section-wrap testimonials-section"><div className="section-heading"><div><p className="eyebrow section-eyebrow"><NordicStar className="size-3" />{t.clients}</p><h2>{t.testimonialTitle}</h2></div><span className="section-number">03 /</span></div><div className="testimonials-grid">{t.roles.map((role, i) => <article key={i} className="testimonial"><Quote size={22} strokeWidth={1} /><p>{t.placeholder}</p><div><span>{t.name}</span><small>{role}</small></div></article>)}</div></section>
+      <section className="section-wrap testimonials-section"><div className="section-heading"><div><p className="eyebrow section-eyebrow"><NordicStar className="size-3" />{t.clients}</p><h2>{t.testimonialTitle}</h2></div><span className="section-number">03 /</span></div><div className="testimonials-grid">{testimonials.map((item, i) => <article key={i} className="testimonial"><Quote size={22} strokeWidth={1} /><p>{item.quote[lang]}</p><div><span>{item.author[lang]}</span><small>{item.role[lang]}</small></div></article>)}</div></section>
       <section className="logistics"><MapPin size={24} strokeWidth={1} /><div><p className="eyebrow">{t.area}</p><p>{t.region}</p></div><NordicStar className="logistics-star" /></section>
       <FinalBooking lang={lang} />
     </main>
