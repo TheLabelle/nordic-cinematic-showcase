@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BOOKING_URL, copy, findProject, featuredProjects, filterProjects, projects } from '@/data/site';
+import { BOOKING_URL, copy, findProject, featuredProjects, filterProjects, projects, testimonials } from '@/data/site';
 describe('Nordik project and booking configuration', () => {
   it('keeps the booking destination as the requested single placeholder', () => { expect(BOOKING_URL).toBe('BOOKING_URL'); });
   it('provides exactly twelve editable placeholder projects', () => { expect(projects).toHaveLength(12); });
@@ -27,5 +27,21 @@ describe('Nordik project and booking configuration', () => {
   it('gives the two project links different labels in both languages', () => {
     expect(copy.fr.projects).not.toBe(copy.fr.portfolio);
     expect(copy.en.projects).not.toBe(copy.en.portfolio);
+  });
+  it('shows the Remorques Labelle testimonial first with the approved wording', () => {
+    expect(testimonials[0]?.quote.fr).toBe('Vidéo de grande qualité, équipement professionnel et une équipe qui répond rapidement. On recommande sans hésiter.');
+    expect(testimonials[0]?.quote.en).toBe('High-quality video, professional equipment and a team that responds quickly. We highly recommend them.');
+    expect(testimonials[0]?.author.fr).toBe('Remorques Labelle, Laval');
+    expect(testimonials[0]?.author.en).toBe('Remorques Labelle, Laval');
+  });
+  it('labels the first client as an event client, not a broker', () => {
+    expect(testimonials[0]?.role.fr).toBe('Événementiel');
+    expect(testimonials[0]?.role.en).toBe('Event');
+    expect(testimonials[0]?.role.fr).not.toBe('Courtier immobilier');
+  });
+  it('keeps three testimonials with the two remaining ones still placeholders', () => {
+    expect(testimonials).toHaveLength(3);
+    expect(testimonials[1]?.quote.fr).toBe('Témoignage à remplacer');
+    expect(testimonials[2]?.quote.en).toBe('Testimonial to replace');
   });
 });
