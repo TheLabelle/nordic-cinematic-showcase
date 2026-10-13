@@ -80,8 +80,8 @@
 .service-bullet-star { width: 10px; height: 10px; flex-shrink: 0; margin-top: 5px; opacity: .45; }
 .testimonials-section { padding-top: 80px; padding-bottom: 80px; }
 .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
-.testimonial { background: var(--card); border: 1px solid var(--soft-line); padding: 27px; border-radius: 3px; }
-.testimonial>svg { opacity: .4; } .testimonial>p { font-family: var(--font-display); font-size: 24px; margin: 18px 0 30px; } .testimonial>div { border-top: 1px solid var(--border); padding-top: 17px; } .testimonial span { font-size: 10px; } .testimonial small { display: block; color: var(--muted-foreground); font-size: 9px; margin-top: 5px; }
+.testimonial { background: var(--card); border: 1px solid var(--soft-line); padding: 27px; border-radius: 3px; display: flex; flex-direction: column; }
+.testimonial>svg { opacity: .4; } .testimonial>p { font-family: var(--font-display); font-size: 24px; margin: 18px 0 30px; } .testimonial>div { border-top: 1px solid var(--border); padding-top: 17px; margin-top: auto; } .testimonial span { font-size: 10px; } .testimonial small { display: block; color: var(--muted-foreground); font-size: 9px; margin-top: 5px; }
 .logistics { margin: 0 auto; max-width: 1075px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 22px; padding: 28px 0; }
 .logistics .eyebrow { color: var(--muted-foreground); margin-bottom: 3px; font-size: 12px; } .logistics div>p:last-child { font-size: 13px; } .logistics-star { width: 30px; opacity: .25; margin-left: auto; }
 .final-booking { text-align: center; padding: 90px 24px 95px; position: relative; overflow: hidden; }
