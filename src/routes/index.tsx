@@ -6,7 +6,6 @@ import { NordicStar } from '@/components/nordik/brand';
 import { copy, featuredProjects, type Language } from '@/data/site';
 import { BookingButton, SiteHeader, SiteFooter, FinalBooking, MobileBooking, ProjectGallery } from '@/components/nordik/site-ui';
 import hero from '@/assets/hero-house.jpg';
-import heroVideo from '@/assets/hero-video.asset.json';
 
 export const Route = createFileRoute('/')({
   validateSearch: (search: Record<string, unknown>): { lang: Language } => ({ lang: search['lang'] === 'en' ? 'en' : 'fr' }),
