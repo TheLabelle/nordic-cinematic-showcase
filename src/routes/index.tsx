@@ -23,9 +23,8 @@ export const Route = createFileRoute('/')({
 function Index() {
   const { lang } = Route.useSearch();
   const t = copy[lang];
-  const [videoReady, setVideoReady] = useState(false);
   useEffect(() => { document.documentElement.lang = lang; }, [lang]);
-  useEffect(() => { if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) setVideoReady(true); }, []);
+
   return <div className="site">
     <SiteHeader lang={lang} />
     <main>
