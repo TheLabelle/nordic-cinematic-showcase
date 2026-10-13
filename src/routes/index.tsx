@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { ArrowDown, Drone, Clapperboard, MapPin, Quote, ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { NordicStar } from '@/components/nordik/brand';
