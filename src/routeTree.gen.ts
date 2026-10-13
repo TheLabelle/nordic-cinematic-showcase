@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SoumissionRouteImport } from './routes/soumission'
 import { Route as ProjetsIndexRouteImport } from './routes/projets.index'
 import { Route as ProjetsSlugRouteImport } from './routes/projets.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SoumissionRoute = SoumissionRouteImport.update({
+  id: '/soumission',
+  path: '/soumission',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjetsIndexRoute = ProjetsIndexRouteImport.update({
@@ -31,30 +37,34 @@ const ProjetsSlugRoute = ProjetsSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/soumission': typeof SoumissionRoute
   '/projets/$slug': typeof ProjetsSlugRoute
   '/projets/': typeof ProjetsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/soumission': typeof SoumissionRoute
   '/projets/$slug': typeof ProjetsSlugRoute
   '/projets': typeof ProjetsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/soumission': typeof SoumissionRoute
   '/projets/$slug': typeof ProjetsSlugRoute
   '/projets/': typeof ProjetsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/projets/$slug' | '/projets/'
+  fullPaths: '/' | '/soumission' | '/projets/$slug' | '/projets/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/projets/$slug' | '/projets'
-  id: '__root__' | '/' | '/projets/$slug' | '/projets/'
+  to: '/' | '/soumission' | '/projets/$slug' | '/projets'
+  id: '__root__' | '/' | '/soumission' | '/projets/$slug' | '/projets/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SoumissionRoute: typeof SoumissionRoute
   ProjetsSlugRoute: typeof ProjetsSlugRoute
   ProjetsIndexRoute: typeof ProjetsIndexRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/soumission': {
+      id: '/soumission'
+      path: '/soumission'
+      fullPath: '/soumission'
+      preLoaderRoute: typeof SoumissionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projets/': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SoumissionRoute: SoumissionRoute,
   ProjetsSlugRoute: ProjetsSlugRoute,
   ProjetsIndexRoute: ProjetsIndexRoute,
 }
