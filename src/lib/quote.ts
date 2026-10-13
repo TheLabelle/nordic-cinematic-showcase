@@ -6,11 +6,11 @@ export const QUOTE_RECIPIENT_EMAIL = 'benjaminparadis22@icloud.com';
 
 export interface QuoteSubmissionPayload {
   name: string;
-  phone?: string;
-  email?: string;
+  phone?: string | undefined;
+  email?: string | undefined;
   projectTypes: ('real-estate' | 'events')[];
-  message?: string;
-  hp_website?: string;
+  message?: string | undefined;
+  hp_website?: string | undefined;
 }
 
 export interface QuoteSubmissionResponse {
@@ -19,8 +19,8 @@ export interface QuoteSubmissionResponse {
 }
 
 function getResendApiKey(): string | undefined {
-  if (typeof process !== 'undefined' && process.env?.RESEND_API_KEY) {
-    return process.env.RESEND_API_KEY;
+  if (typeof process !== 'undefined' && process.env?.['RESEND_API_KEY']) {
+    return process.env['RESEND_API_KEY'];
   }
   return undefined;
 }
