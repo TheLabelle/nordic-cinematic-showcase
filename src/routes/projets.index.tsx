@@ -29,6 +29,7 @@ function ProjectsPage() {
       <section className="section-wrap projects-section portfolio-section">
         <div className="section-heading"><div><p className="eyebrow section-eyebrow"><NordicStar className="size-3" />{t.portfolio}</p><h1>{t.projectTitle}</h1></div><span className="section-number">01 /</span></div>
         <div className="filters" aria-label={t.portfolio}>{CATEGORY_ORDER.map((c, i) => <Button key={c} variant="ghost" className={`filter ${category === c ? 'selected' : ''}`} onClick={() => setCategory(c)} aria-pressed={category === c}>{t.filters[i]}<span>{String(filterProjects(c).length).padStart(2, '0')}</span></Button>)}</div>
+        {category !== 'all' && <p className="category-intro" aria-live="polite">{t.categoryIntros[category]}</p>}
         <ProjectGallery lang={lang} items={filterProjects(category)} />
       </section>
       <FinalBooking lang={lang} />

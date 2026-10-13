@@ -18,7 +18,7 @@ export function SiteHeader({ lang }: { lang: Language }) {
 }
 function NavLinks({ lang, onNavigate }: { lang: Language; onNavigate?: () => void }) {
  const t = copy[lang];
- return <><Link to="/services" search={{ lang }} onClick={onNavigate}>{t.services}</Link><Link to="/projets" search={{ lang }} onClick={onNavigate}>{t.projects}</Link><Link to="/forfaits" search={{ lang }} onClick={onNavigate}>{t.packagesNav}</Link><Link to="/a-propos" search={{ lang }} onClick={onNavigate}>{t.aboutNav}</Link><Link to="/soumission" search={{ lang }} onClick={onNavigate}>{t.quoteNav}</Link></>;
+ return <><Link to="/services" search={{ lang }} onClick={onNavigate}>{t.services}</Link><Link to="/projets" search={{ lang }} onClick={onNavigate}>{t.projects}</Link><Link to="/forfaits" search={{ lang }} onClick={onNavigate}>{t.packagesNav}</Link><Link to="/soumission" search={{ lang }} onClick={onNavigate}>{t.quoteNav}</Link></>;
 }
 export function FinalBooking({ lang }: { lang: Language }) {
  const t = copy[lang];

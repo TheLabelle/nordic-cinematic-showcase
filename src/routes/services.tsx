@@ -47,6 +47,10 @@ function ServicesPage() {
         </section>;
       })}
       <section className="services-section services-options"><div className="section-wrap"><div className="section-heading"><div><p className="eyebrow section-eyebrow"><NordicStar className="size-3" />{sp.optionsEyebrow}</p><h2>{sp.optionsTitle}</h2></div></div><ExpertiseList lang={lang} /></div></section>
+      <section className="section-wrap about-details"><div className="about-details-grid">
+        <div><p className="eyebrow section-eyebrow"><NordicStar className="size-3" />{sp.equipmentEyebrow}</p><h2>{sp.equipmentTitle}</h2><p>{sp.equipmentText}</p></div>
+        <div><p className="eyebrow section-eyebrow"><NordicStar className="size-3" />{sp.approachEyebrow}</p><h2>{sp.approachTitle}</h2><p>{sp.approachText}</p></div>
+      </div></section>
       <ServiceArea lang={lang} />
       <FinalBooking lang={lang} />
     </main>

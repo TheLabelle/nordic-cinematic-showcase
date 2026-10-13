@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { BOOKING_URL, CATEGORY_ORDER, OWNER_PHOTOS, PACKAGE_PRICES, SERVICE_CITIES, SERVICE_MEDIA, copy, findProject, featuredProjects, filterProjects, projects, testimonials } from '@/data/site';
+import { BOOKING_URL, CATEGORY_ORDER, PACKAGE_PRICES, SERVICE_CITIES, SERVICE_MEDIA, copy, findProject, featuredProjects, filterProjects, projects, testimonials } from '@/data/site';
 describe('Nordik project and booking configuration', () => {
   it('keeps the booking destination as the requested single placeholder', () => { expect(BOOKING_URL).toBe('BOOKING_URL'); });
   it('provides exactly twelve editable placeholder projects', () => { expect(projects).toHaveLength(12); });
@@ -26,9 +26,9 @@ describe('Nordik project and booking configuration', () => {
     expect(copy.fr.introP2).toContain('met en valeur vos propriétés et vos événements');
     expect(copy.en.introP2).toContain('showcases your properties and events');
   });
-  it('labels the menu Services · Réalisations · Forfaits · À propos · Soumission', () => {
-    expect([copy.fr.services, copy.fr.projects, copy.fr.packagesNav, copy.fr.aboutNav, copy.fr.quoteNav]).toEqual(['Services', 'Réalisations', 'Forfaits', 'À propos', 'Soumission']);
-    expect([copy.en.services, copy.en.projects, copy.en.packagesNav, copy.en.aboutNav, copy.en.quoteNav]).toEqual(['Services', 'Our work', 'Packages', 'About', 'Quote']);
+  it('labels the menu Services · Réalisations · Forfaits · Soumission', () => {
+    expect([copy.fr.services, copy.fr.projects, copy.fr.packagesNav, copy.fr.quoteNav]).toEqual(['Services', 'Réalisations', 'Forfaits', 'Soumission']);
+    expect([copy.en.services, copy.en.projects, copy.en.packagesNav, copy.en.quoteNav]).toEqual(['Services', 'Our work', 'Packages', 'Quote']);
   });
   it('keeps every package price as a [PRIX] placeholder and mentions Interac', () => {
     expect(Object.values(PACKAGE_PRICES)).toEqual(Array(6).fill('[PRIX]'));
@@ -37,10 +37,14 @@ describe('Nordik project and booking configuration', () => {
     for (const lang of ['fr', 'en'] as const) for (const p of copy[lang].packagesPage.packages) expect(p.items.length).toBeGreaterThanOrEqual(3);
     expect(copy.fr.packagesPage.payment).toBe('Paiement par virement Interac.');
   });
-  it('has two co-owner blocks on the about page in both languages', () => {
-    expect(copy.fr.aboutPage.owners).toHaveLength(2);
-    expect(copy.en.aboutPage.owners).toHaveLength(2);
-    expect(OWNER_PHOTOS).toHaveLength(2);
+  it('shows equipment and approach on the services page in both languages', () => {
+    expect(copy.fr.servicesPage.equipmentTitle).toBe('Notre équipement');
+    expect(copy.fr.servicesPage.approachTitle).toBe('Notre approche');
+    expect(copy.en.servicesPage.equipmentTitle).toBe('Our equipment');
+    expect(copy.en.servicesPage.approachTitle).toBe('Our approach');
+  });
+  it('has a summary paragraph for every portfolio category in both languages', () => {
+    for (const lang of ['fr', 'en'] as const) for (const c of CATEGORY_ORDER.filter(c => c !== 'all')) expect(copy[lang].categoryIntros[c].length).toBeGreaterThan(40);
   });
   it('never sets text smaller than 12px in the stylesheet', () => {
     const css = readFileSync(resolve(__dirname, '../styles.css'), 'utf8');

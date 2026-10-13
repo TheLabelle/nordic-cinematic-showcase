@@ -205,18 +205,14 @@
 .service-row-text h2 { font-size: 43px; line-height: 1.12; margin: 10px 0 16px; }
 .service-row-text p { font-size: 15px; line-height: 1.8; opacity: .82; max-width: 420px; margin-bottom: 28px; }
 .services-options { margin-top: 36px; margin-bottom: 80px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; align-items: end; }
 .form-optional { color: var(--muted-foreground); font-weight: 400; }
-.form-select { appearance: none; cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size: 5px 5px; background-repeat: no-repeat; }
-.form-select option { background: var(--background); color: var(--foreground); }
-.form-input[type="date"] { color-scheme: dark; }
+.form-input[type="date"] { color-scheme: dark; } .form-date { max-width: 260px; } .form-group-centered { align-items: center; text-align: center; } .form-group-centered .form-label { justify-content: center; }
 @media (max-width: 1000px) { .why-grid { grid-template-columns: 1fr 1fr; } .service-row { gap: 32px; } .service-row-text h2 { font-size: 36px; } }
 @media (max-width: 767px) {
   .why-section { padding-top: 56px; } .why-grid { grid-template-columns: 1fr; gap: 14px; } .why-item { padding-top: 18px; } .why-item p { font-size: 19px; margin-top: 10px; }
   .services-page-intro { padding-top: 125px; padding-bottom: 50px; } .services-page-intro h1 { font-size: 36px; } .services-page-lead { font-size: 13px; }
   .service-row { grid-template-columns: 1fr; gap: 22px; padding-top: 34px; padding-bottom: 34px; } .service-row:nth-of-type(odd) .service-row-media { order: 0; } .service-row-text h2 { font-size: 32px; margin: 8px 0 12px; } .service-row-text p { font-size: 13px; margin-bottom: 22px; } .services-options { margin-top: 20px; margin-bottom: 56px; }
   .service-cities { font-size: 12px; }
-  .form-row { grid-template-columns: 1fr; }
 }
 
 .mobile-booking-bar { transition: transform .3s ease, opacity .3s ease; } .mobile-booking-bar.is-hidden { transform: translateY(100%); opacity: 0; pointer-events: none; }
@@ -239,25 +235,18 @@
 .package-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; border: 1px solid var(--border); padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
 .packages-payment { text-align: center; margin-top: 34px; font-size: 14px; color: var(--muted-foreground); }
 
-/* About page */
-.owners-section { padding-bottom: 80px; }
-.owners-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-.owner-photo { aspect-ratio: 4 / 5; overflow: hidden; border-radius: 3px; background: var(--card); border: 1px solid var(--soft-line); margin-bottom: 22px; }
-.owner-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.owner h3 { font-size: 30px; line-height: 1.15; }
-.owner-role { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-foreground); margin: 8px 0 14px; }
-.owner-bio { font-size: 15px; line-height: 1.8; opacity: .85; }
-.about-details { margin-bottom: 80px; }
+/* Equipment and approach (services page) */
+.about-details { padding-top: 10px; padding-bottom: 80px; }
 .about-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
 .about-details-grid h2 { font-size: 40px; line-height: 1.15; margin-bottom: 16px; }
 .about-details-grid p:not(.eyebrow) { font-size: 15px; line-height: 1.8; opacity: .85; }
 
 @media (max-width: 1000px) { .packages-grid { grid-template-columns: 1fr 1fr; } .package-featured { grid-template-columns: 1fr; gap: 24px; } }
 @media (max-width: 767px) {
-  .packages-grid, .owners-grid, .about-details-grid { grid-template-columns: 1fr; gap: 18px; }
+  .packages-grid, .about-details-grid { grid-template-columns: 1fr; gap: 18px; }
   .package { padding: 24px; } .package h2 { font-size: 27px; } .package-featured h2 { font-size: 32px; }
-  .owners-section { padding-bottom: 56px; } .owners-grid { gap: 36px; } .owner h3 { font-size: 26px; } .owner-bio, .about-details-grid p:not(.eyebrow) { font-size: 14px; }
-  .about-details { margin-bottom: 56px; } .about-details-grid { gap: 36px; } .about-details-grid h2 { font-size: 32px; }
+  .about-details-grid p:not(.eyebrow) { font-size: 14px; }
+  .about-details { padding-bottom: 56px; } .about-details-grid { gap: 36px; } .about-details-grid h2 { font-size: 32px; }
   .packages-section { padding-bottom: 56px; }
 }
 
@@ -265,3 +254,6 @@
 .desktop-nav a { white-space: nowrap; }
 @media (max-width: 1150px) and (min-width: 768px) { .desktop-booking { display: none; } }
 .section-number { white-space: nowrap; }
+
+.category-intro { font-size: 20px; line-height: 1.7; max-width: 820px; opacity: .88; margin: -6px auto 34px; text-align: center; }
+@media (max-width: 767px) { .category-intro { font-size: 17px; margin-bottom: 26px; } }

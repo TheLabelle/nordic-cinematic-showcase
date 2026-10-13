@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { NordicStar } from '@/components/nordik/brand';
 import { SiteHeader, SiteFooter } from '@/components/nordik/site-ui';
-import { copy, CONTACT_EMAIL, QUOTE_BUDGETS, QUOTE_PROJECT_TYPES, type Language, type QuoteBudget, type QuoteProjectType } from '@/data/site';
+import { copy, CONTACT_EMAIL, QUOTE_PROJECT_TYPES, type Language, type QuoteProjectType } from '@/data/site';
 import { submitQuoteRequest } from '@/lib/quote';
 
 export const Route = createFileRoute('/soumission')({
@@ -50,7 +50,6 @@ function QuotePage() {
   const [email, setEmail] = useState('');
   const [selectedTypes, setSelectedTypes] = useState<QuoteProjectType[]>([]);
   const [preferredDate, setPreferredDate] = useState('');
-  const [budget, setBudget] = useState<QuoteBudget | ''>('');
   const [message, setMessage] = useState('');
   const [hpWebsite, setHpWebsite] = useState(''); // Honeypot field
 
@@ -125,7 +124,6 @@ function QuotePage() {
           email: trimmedEmail || undefined,
           projectTypes,
           preferredDate: preferredDate || undefined,
-          budget: budget || undefined,
           message: message.trim() || undefined,
           hp_website: hpWebsite || undefined,
         },
@@ -200,7 +198,6 @@ function QuotePage() {
                       setEmail('');
                       setSelectedTypes([]);
                       setPreferredDate('');
-                      setBudget('');
                       setMessage('');
                     }}
                   >
@@ -308,37 +305,19 @@ function QuotePage() {
                     {projectTypeError && <span className="field-error">{projectTypeError}</span>}
                   </div>
 
-                  {/* Preferred date and budget (optional) */}
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label htmlFor="quote-date" className="form-label">
-                        <span>{qp.date} <span className="form-optional">({qp.optional})</span></span>
-                      </label>
-                      <input
-                        id="quote-date"
-                        type="date"
-                        className="form-input"
-                        min={new Date().toISOString().slice(0, 10)}
-                        value={preferredDate}
-                        onChange={(e) => setPreferredDate(e.target.value)}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="quote-budget" className="form-label">
-                        <span>{qp.budget} <span className="form-optional">({qp.optional})</span></span>
-                      </label>
-                      <select
-                        id="quote-budget"
-                        className="form-input form-select"
-                        value={budget}
-                        onChange={(e) => setBudget(e.target.value as QuoteBudget | '')}
-                      >
-                        <option value="">{qp.budgetPlaceholder}</option>
-                        {QUOTE_BUDGETS.map((b) => (
-                          <option key={b} value={b}>{qp.budgets[b]}</option>
-                        ))}
-                      </select>
-                    </div>
+                  {/* Preferred date (optional), centered in the form card */}
+                  <div className="form-group form-group-centered">
+                    <label htmlFor="quote-date" className="form-label">
+                      <span>{qp.date} <span className="form-optional">({qp.optional})</span></span>
+                    </label>
+                    <input
+                      id="quote-date"
+                      type="date"
+                      className="form-input form-date"
+                      min={new Date().toISOString().slice(0, 10)}
+                      value={preferredDate}
+                      onChange={(e) => setPreferredDate(e.target.value)}
+                    />
                   </div>
 
                   {/* Message (optional) */}
