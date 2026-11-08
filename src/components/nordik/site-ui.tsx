@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { ArrowUpRight, MapPin, Instagram, Facebook, Menu, X, Drone, Clapperboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Brand, NordicStar } from '@/components/nordik/brand';
-import { SERVICE_CITIES, copy, imageAlt, type Language, projects } from '@/data/site';
+import { SERVICE_CITIES, SHOW_PACKAGES_PAGE, copy, imageAlt, type Language, projects } from '@/data/site';
 
 export function LanguageToggle({ lang }: { lang: Language }) {
   return <div className="language-toggle" aria-label={lang === 'fr' ? 'Langue' : 'Language'}>{(['fr', 'en'] as const).map((l, i) => <span key={l}>{i > 0 && <span className="language-divider">|</span>}<Button asChild variant="ghost" className={lang === l ? 'language active' : 'language'}><Link to="." search={prev => ({ ...prev, lang: l })} resetScroll={false} aria-current={lang === l ? 'true' : undefined}>{l.toUpperCase()}</Link></Button></span>)}</div>;
@@ -18,7 +18,7 @@ export function SiteHeader({ lang }: { lang: Language }) {
 }
 function NavLinks({ lang, onNavigate }: { lang: Language; onNavigate?: () => void }) {
  const t = copy[lang];
- return <><Link to="/services" search={{ lang }} onClick={onNavigate}>{t.services}</Link><Link to="/projets" search={{ lang }} onClick={onNavigate}>{t.projects}</Link><Link to="/forfaits" search={{ lang }} onClick={onNavigate}>{t.packagesNav}</Link><Link to="/soumission" search={{ lang }} onClick={onNavigate}>{t.quoteNav}</Link></>;
+ return <><Link to="/services" search={{ lang }} onClick={onNavigate}>{t.services}</Link><Link to="/projets" search={{ lang }} onClick={onNavigate}>{t.projects}</Link>{SHOW_PACKAGES_PAGE && <Link to="/forfaits" search={{ lang }} onClick={onNavigate}>{t.packagesNav}</Link>}<Link to="/soumission" search={{ lang }} onClick={onNavigate}>{t.quoteNav}</Link></>;
 }
 export function FinalBooking({ lang }: { lang: Language }) {
  const t = copy[lang];
@@ -55,5 +55,5 @@ export function MobileBooking({ lang, revealAfterId }: { lang: Language; revealA
 export function ProjectGallery({ lang, items }: { lang: Language; items: typeof projects }) {
  const t = copy[lang];
  if (items.length === 0) return <p className="project-empty">{t.emptyCategory}</p>;
- return <div className="project-grid">{items.map(p => <article className="project" key={p.id}><Link to="/projets/$slug" params={{ slug: p.slug }} search={{ lang }} className="project-image-button group" aria-label={`${t.play} — ${p.title[lang]}`}><img src={p.thumbnail} width="1280" height="832" loading="lazy" alt={imageAlt(p.thumbnail, lang, p.description[lang])} /><span className="location-tag"><MapPin size={11} />{p.location}</span><span className="play-icon"><ArrowUpRight size={19} /></span><span className="project-index">{String(p.id).padStart(2, '0')}</span></Link><div className="project-caption"><h3>{p.title[lang]}</h3></div><p>{p.description[lang]}</p><Link to="/projets/$slug" params={{ slug: p.slug }} search={{ lang }} className="view-project">{t.viewProject}</Link></article>)}</div>;
+ return <div className="project-grid">{items.map(p => <article className="project" key={p.id}><Link to="/projets/$slug" params={{ slug: p.slug }} search={{ lang }} className="project-image-button group" aria-label={`${t.play} — ${p.title[lang]}`}><img src={p.thumbnail} width="1280" height="832" loading="lazy" alt={imageAlt(p.thumbnail, lang, `${t.videoStill} : ${p.title[lang]}`)} />{p.location && <span className="location-tag"><MapPin size={11} />{p.location}</span>}<span className="play-icon"><ArrowUpRight size={19} /></span><span className="project-index">{String(p.id).padStart(2, '0')}</span></Link><div className="project-caption"><h3>{p.title[lang]}</h3></div><p>{p.description[lang]}</p><Link to="/projets/$slug" params={{ slug: p.slug }} search={{ lang }} className="view-project">{t.viewProject}</Link></article>)}</div>;
 }

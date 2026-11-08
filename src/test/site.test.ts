@@ -1,23 +1,35 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { BOOKING_URL, CATEGORY_ORDER, PACKAGE_PRICES, SERVICE_CITIES, SERVICE_MEDIA, copy, findProject, featuredProjects, filterProjects, projects, testimonials } from '@/data/site';
+import { BOOKING_URL, CATEGORY_ORDER, PACKAGE_PRICES, SERVICE_CITIES, SHOW_PACKAGES_PAGE, SERVICE_MEDIA, copy, findProject, featuredProjects, filterProjects, projects, testimonials } from '@/data/site';
 describe('Nordik project and booking configuration', () => {
   it('keeps the booking destination as the requested single placeholder', () => { expect(BOOKING_URL).toBe('BOOKING_URL'); });
-  it('provides exactly twelve editable placeholder projects', () => { expect(projects).toHaveLength(12); });
-  it('marks exactly three projects as featured', () => { expect(projects.filter(p => p.featured).map(p => p.id)).toEqual([1,2,3]); });
-  it('shows only the three featured projects on home', () => { expect(featuredProjects().map(p => p.id)).toEqual([1,2,3]); });
+  it('lists the seven real YouTube projects', () => {
+    expect(projects).toHaveLength(7);
+    for (const p of projects) {
+      expect(p.videoUrl).toMatch(/^https:\/\/www\.youtube-nocookie\.com\/embed\/[\w-]{11}$/);
+      expect(p.thumbnail).toMatch(/^https:\/\/i\.ytimg\.com\/vi\/[\w-]{11}\/maxresdefault\.jpg$/);
+      expect(p.title.fr && p.title.en && p.description.fr && p.description.en).toBeTruthy();
+    }
+    expect(projects.find(p => p.id === 4)?.videoUrl).toBe('https://www.youtube-nocookie.com/embed/Jyr4QmBarWY');
+  });
+  it('leaves the city empty for projects without one', () => { expect(projects.filter(p => !p.location).map(p => p.id)).toEqual([2,5]); });
+  it('shows the three featured projects on home', () => { expect(featuredProjects().map(p => p.id)).toEqual([1,3,6]); });
   it('limits home to three even if more projects become featured', () => {
-    const project = projects[3];
-    if (!project) throw new Error('Missing fourth project');
+    const project = projects[1];
+    if (!project) throw new Error('Missing second project');
     const original = project.featured;
-    try { project.featured = true; expect(featuredProjects().map(p => p.id)).toEqual([1,2,3]); }
+    try { project.featured = true; expect(featuredProjects()).toHaveLength(3); }
     finally { project.featured = original; }
   });
-  it('filters real estate without showing events', () => { expect(filterProjects('real-estate').map(p => p.id)).toEqual([1,3,4,6,7,9,10,12]); });
-  it('filters events without showing real estate', () => { expect(filterProjects('events').map(p => p.id)).toEqual([2,5,8,11]); });
-  it('gives every project a unique detail page address', () => { expect(new Set(projects.map(p => p.slug)).size).toBe(12); expect(findProject('une-autre-perspective')?.id).toBe(1); });
-  it('shows all twelve projects for all', () => { expect(filterProjects('all')).toHaveLength(12); });
+  it('filters each category without mixing others', () => {
+    expect(filterProjects('real-estate').map(p => p.id)).toEqual([6,7]);
+    expect(filterProjects('events').map(p => p.id)).toEqual([1,2]);
+    expect(filterProjects('business').map(p => p.id)).toEqual([3,5]);
+    expect(filterProjects('music').map(p => p.id)).toEqual([4]);
+    expect(filterProjects('all')).toHaveLength(7);
+  });
+  it('gives every project a unique detail page address', () => { expect(new Set(projects.map(p => p.slug)).size).toBe(7); expect(findProject('batman-glasseartz')?.id).toBe(4); });
   it('keeps the home intro block bilingual with the approved wording', () => {
     expect(copy.fr.introTitle).toBe('Pourquoi une vidéo promotionnelle?');
     expect(copy.en.introTitle).toBe('Why a promotional video?');
@@ -29,6 +41,9 @@ describe('Nordik project and booking configuration', () => {
   it('labels the menu Services · Réalisations · Forfaits · Soumission', () => {
     expect([copy.fr.services, copy.fr.projects, copy.fr.packagesNav, copy.fr.quoteNav]).toEqual(['Services', 'Réalisations', 'Forfaits', 'Soumission']);
     expect([copy.en.services, copy.en.projects, copy.en.packagesNav, copy.en.quoteNav]).toEqual(['Services', 'Our work', 'Packages', 'Quote']);
+  });
+  it('keeps the packages page hidden from the menu for now', () => {
+    expect(SHOW_PACKAGES_PAGE).toBe(false);
   });
   it('keeps every package price as a [PRIX] placeholder and mentions Interac', () => {
     expect(Object.values(PACKAGE_PRICES)).toEqual(Array(6).fill('[PRIX]'));
@@ -58,10 +73,10 @@ describe('Nordik project and booking configuration', () => {
     expect(SERVICE_CITIES).toEqual(['Laval', 'Terrebonne', 'Blainville', 'Mirabel', 'Saint-Jérôme']);
     for (const lang of ['fr', 'en'] as const) expect(JSON.stringify(copy[lang])).not.toMatch(/Rive-Sud|Grand Montréal|South Shore|Greater Montreal/);
   });
-  it('offers six portfolio filters with an empty state for categories without projects yet', () => {
-    expect(CATEGORY_ORDER).toEqual(['all', 'real-estate', 'events', 'business', 'construction', 'vlog']);
-    expect(copy.fr.filters).toEqual(['Tous', 'Immobilier', 'Événements', 'Commerces', 'Construction', 'Vlogs']);
-    expect(copy.en.filters).toHaveLength(6);
+  it('offers seven portfolio filters with an empty state for categories without projects yet', () => {
+    expect(CATEGORY_ORDER).toEqual(['all', 'real-estate', 'events', 'business', 'construction', 'vlog', 'music']);
+    expect(copy.fr.filters).toEqual(['Tous', 'Immobilier', 'Événements', 'Commerces', 'Construction', 'Vlogs', 'Clips musicaux']);
+    expect(copy.en.filters).toHaveLength(7);
     expect(filterProjects('construction')).toHaveLength(0);
   });
   it('lists the five services in the same order in both languages, each with a media slot', () => {

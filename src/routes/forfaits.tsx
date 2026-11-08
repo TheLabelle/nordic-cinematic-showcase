@@ -1,11 +1,12 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, notFound } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { NordicStar } from '@/components/nordik/brand';
 import { BookingButton, SiteHeader, SiteFooter, FinalBooking, MobileBooking } from '@/components/nordik/site-ui';
-import { PACKAGE_PRICES, copy, type Language, type ProjectCategory } from '@/data/site';
+import { PACKAGE_PRICES, SHOW_PACKAGES_PAGE, copy, type Language, type ServiceCategory } from '@/data/site';
 
 export const Route = createFileRoute('/forfaits')({
   validateSearch: (search: Record<string, unknown>): { lang: Language } => ({ lang: search['lang'] === 'en' ? 'en' : 'fr' }),
+  beforeLoad: () => { if (!SHOW_PACKAGES_PAGE) throw notFound(); },
   loaderDeps: ({ search }) => ({ lang: search.lang }),
   loader: ({ deps }) => ({ lang: deps.lang }),
   head: ({ loaderData }) => {
@@ -54,7 +55,7 @@ function PackagesPage() {
         <div className="packages-grid">
           {pp.packages.map(pkg => <article key={pkg.id} className="package">
             <h2>{pkg.title}</h2>
-            <p className="package-price">{priceLabel(lang, PACKAGE_PRICES[pkg.id as ProjectCategory])}</p>
+            <p className="package-price">{priceLabel(lang, PACKAGE_PRICES[pkg.id as ServiceCategory])}</p>
             <p className="package-included">{pp.included}</p>
             <ul className="package-items">{pkg.items.map(item => <li key={item}><NordicStar className="package-item-star" />{item}</li>)}</ul>
             <BookingButton lang={lang} label={t.finalCta} className="package-button" />

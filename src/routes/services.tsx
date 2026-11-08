@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { NordicStar } from '@/components/nordik/brand';
 import { BookingButton, SiteHeader, SiteFooter, FinalBooking, MobileBooking, ExpertiseList, ServiceArea } from '@/components/nordik/site-ui';
-import { SERVICE_MEDIA, copy, imageAlt, type Language, type ProjectCategory } from '@/data/site';
+import { SERVICE_MEDIA, copy, imageAlt, type Language, type ServiceCategory } from '@/data/site';
 
 export const Route = createFileRoute('/services')({
   validateSearch: (search: Record<string, unknown>): { lang: Language } => ({ lang: search['lang'] === 'en' ? 'en' : 'fr' }),
@@ -31,7 +31,7 @@ function ServicesPage() {
         <p className="services-page-lead">{sp.intro}</p>
       </section>
       {sp.services.map((service, i) => {
-        const media = SERVICE_MEDIA[service.id as ProjectCategory];
+        const media = SERVICE_MEDIA[service.id as ServiceCategory];
         return <section key={service.id} id={service.id} className="section-wrap service-row">
           <div className="service-row-media">
             {media.videoUrl ? <iframe src={media.videoUrl} title={service.title} loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowFullScreen />
